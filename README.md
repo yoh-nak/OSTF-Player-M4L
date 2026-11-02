@@ -1,194 +1,433 @@
 # OSTF Player for Max for Live
 
-**Version 1.3.2 — OSTF 3.5 Support**
+**Version 2.0 — OSTF 4.0 Support, GM Preview Browser, Unified Song / Arrangement Playback**
 
-**OSTF Player** is a free, interactive song player, visualizer, and lead sheet tool for **Ableton Live / Max for Live**, powered by the **Open Song Timeline Format (OSTF)**.
+**OSTF Player** is a free interactive song player, visualizer, arrangement inspector, and lead sheet tool for **Ableton Live / Max for Live**, powered by the **Open Song Timeline Format (OSTF)**.
 
-Load and explore complete songs—including sections, chord progressions, melodies, lyrics, arrangement tracks, and detailed note-performance information—in one interface. Preview arrangements with the built-in sound engine, transpose the music, inspect MIDI notes, and export printable lead sheets.
+Load complete OSTF songs and explore their structure, chord progressions, chord voicings, melodies, lyrics, arrangement tracks, tempo, meter, key changes, MIDI performance data, and expression information in a single interface.
 
-The device includes **13 instrument sound definitions, 4 drum kits, and 11 built-in OSTF 3.5 demo songs**.
+OSTF Player v2.0 significantly expands the Player beyond the earlier OSTF 3.x versions with improved OSTF 4.0 support, more detailed MIDI-expression visualization, GM Program Change handling, a new GM instrument browser, arrangement sound setup, improved built-in preview playback, and major playback/UI stability improvements.
 
-> **Current versions:** OSTF Player **v1.3.2** supports the **OSTF 3.5 standard** while retaining compatibility with OSTF 3.0–3.4 files where possible. The separately downloadable demo collection uses **OSTF 3.5**. The Player version and the OSTF file-format version are maintained independently.
+> **Current version:** OSTF Player **v2.0** supports **OSTF 4.0** and retains compatibility with supported OSTF 3.x files.  
+> The Player version and the OSTF file-format version are maintained independently.
 
-## Features
+---
 
-### OSTF File Support
+## Main Features
 
-OSTF Player v1.3.2 uses the **standard OSTF data model** for song metadata, timeline information, harmony, lyrics, tracks, presentation data, and note-performance state.
+- OSTF 4.0 song playback and visualization
+- Compatibility with supported OSTF 3.x files
+- Song structure and chord progression timeline
+- Chord voicing piano roll
+- Multiple melody and arrangement-track visualization
+- Lyrics and pronunciation display
+- MIDI note and expression inspection
+- Program Change / GM instrument interpretation
+- CC, Pitch Bend, and Aftertouch visualization
+- Built-in lightweight preview sound engine
+- GM 1–128 instrument browser
+- Built-in drum-kit browser
+- Arrangement track mixer and sound setup
+- Song transposition
+- Key diagrams
+- Lead sheet / print workflow
+- MIDI-oriented export workflows
+- 11 built-in OSTF 4.0 demo songs
 
-- Full support for standard **OSTF 3.5** song files.
-- Compatibility with OSTF 3.0, 3.1, 3.2, 3.3, and 3.4 files where possible.
-- Read song key information from standard OSTF fields.
-- Read key changes from the standard OSTF timeline.
-- Read genre metadata directly from standard OSTF song metadata.
-- Read tempo and meter changes from the OSTF timeline.
-- Read song credits and contributor information from standard OSTF fields.
-- Read chord voicing information from standard harmony data.
-- Read primary melody and lyric-document references from standard OSTF fields.
-- Read standard presentation information where available.
-- Read OSTF 3.5 note-performance state.
-- Preserve the source OSTF file during playback, visualization, and temporary transposition.
+---
 
-## OSTF 3.5 Note State Support
+# OSTF File Support
 
-OSTF 3.5 expands note-level performance information.
+OSTF Player v2.0 uses the **standard OSTF data model** for song metadata, timeline information, harmony, lyrics, tracks, presentation information, notes, and MIDI-style performance data.
 
-OSTF Player v1.3.2 supports standard OSTF 3.5 fields including:
+Supported workflows include:
 
-- `enabled`
-- `releaseVelocity`
-- `probability`
-- `velocityDeviation`
-- `pitchRole`
-- `phraseInstance.noteStateMode`
+- Load standard **OSTF 4.0** song files
+- Load supported OSTF 3.x files
+- Read song title and metadata
+- Read genres
+- Read song key information
+- Read timeline key changes
+- Read tempo changes
+- Read meter changes
+- Read song sections
+- Read harmonic events
+- Read chord voicings
+- Read melody tracks
+- Read arrangement tracks
+- Read lyric documents
+- Read presentation information where available
+- Read note-performance information
+- Read Program Change information
+- Read CC information
+- Read Pitch Bend information
+- Read Aftertouch information
+- Preserve loaded OSTF data during normal Player playback and visualization
 
-### Enabled / Muted Notes
+OSTF Player does not require Player-specific private metadata for information already defined by the OSTF standard.
 
-Notes with:
+---
 
-`enabled: false`
+# OSTF 3.x and OSTF 4.0 Compatibility
 
-remain part of the OSTF song data but are not sounded during normal Player playback.
+OSTF Player v2.0 is designed to open both supported **OSTF 3.x** songs and **OSTF 4.0** songs.
 
-The Player does not remove these notes from the source song simply because they are disabled.
+Older OSTF files remain useful for compatibility testing and playback, while OSTF 4.0 provides the current format for the included demo collection.
 
-### Release Velocity
-
-OSTF 3.5 can store a separate Note Off velocity using:
-
-`releaseVelocity`
-
-OSTF Player preserves this information when supported by the destination workflow.
-
-### Note Probability
-
-OSTF 3.5 supports note-level probability.
-
-The Player can use this information during preview playback without permanently rewriting the source song.
-
-Probability is treated as performance behavior rather than as a destructive modification to the original OSTF data.
-
-### Velocity Deviation
-
-OSTF 3.5 can describe controlled variation around the stored note velocity.
-
-OSTF Player can interpret this information during playback while keeping the original stored velocity unchanged.
-
-### Musical Notes and Fixed Triggers
-
-OSTF 3.5 introduces note pitch roles such as:
-
-- `musical`
-- `fixedTrigger`
-
-A **musical** note participates in musical pitch operations such as transposition.
-
-A **fixedTrigger** represents a MIDI note whose absolute note number must remain fixed—for example:
-
-- Key switches
-- Drum-style triggers
-- Articulation switches
-- Device-specific trigger notes
-- Other non-pitched performance controls represented as MIDI notes
-
-When the song is transposed, **fixedTrigger notes are not transposed**.
-
-This prevents musical transposition from accidentally changing articulation switches or other fixed MIDI triggers.
-
-## No Player-Specific OSTF Metadata Extensions
-
-OSTF Player does not depend on Player-specific metadata extensions for information already defined by the OSTF standard.
-
-Key, genre, credits, voicing, lyric selection, track roles, note state, and other supported information are obtained from the corresponding **standard OSTF fields**.
-
-This allows standard OSTF files created by compatible OSTF applications to be loaded without requiring OSTF Player-specific metadata.
-
-The Player does not automatically invent missing metadata.
+The Player attempts to use the information actually stored in the OSTF file rather than silently inventing missing values.
 
 For example:
 
 - A missing key is not automatically treated as C major.
 - A missing genre is not automatically treated as Pop.
-- Track roles are not inferred only from track names.
-- Fixed triggers are not treated as transposable musical notes.
-- Standard OSTF metadata is preferred over application-specific assumptions.
+- Track roles are not determined only from track names.
+- Fixed MIDI triggers are not treated as normal transposable musical notes.
+- Standard OSTF metadata takes priority over Player-specific assumptions.
 
-## Song View
+---
 
-Explore a complete song using an interactive timeline:
+# OSTF 4.0 MIDI Expression Support
 
-- Song sections and chord progressions
-- Melody visualization and pitch information
-- Synchronized lyric and pronunciation displays
-- Playback-position highlighting
-- Timeline navigation and adjustable zoom
-- Song title, genre, tempo, key, and transpose controls
-- Key changes during the song
-- Standard OSTF presentation information where available
+OSTF 4.0 expands the amount of MIDI-oriented performance information that can be stored with a song.
 
-The playback cursor is displayed above the timeline content so that the current playback position remains visible across chord clips and related timeline elements.
+OSTF Player v2.0 can inspect and visualize supported information including:
 
-## Tracks View
+- Note velocity
+- Release Velocity
+- Enabled / disabled notes
+- Probability
+- Velocity Deviation
+- Pitch roles
+- Program Change
+- Control Change
+- Pitch Bend
+- Aftertouch
 
-Inspect individual arrangement tracks:
+Expression lanes can be inspected alongside piano-roll information where applicable.
+
+The Player is intended to preserve the distinction between the musical composition and its performance information rather than destructively converting everything into plain notes.
+
+---
+
+# Enabled and Disabled Notes
+
+OSTF notes can remain part of the song data while being disabled for normal playback.
+
+For example:
+
+```json
+"enabled": false
+```
+
+Disabled notes remain part of the OSTF document but are not treated as normally sounding notes during Player playback.
+
+---
+
+# Musical Notes and Fixed Triggers
+
+OSTF can distinguish normal pitched musical notes from fixed MIDI triggers.
+
+Typical fixed triggers include:
+
+- Key switches
+- Articulation switches
+- Drum-style triggers
+- Device-specific trigger notes
+- Other MIDI notes whose absolute note number must remain unchanged
+
+When transposing a song, fixed triggers remain at their original MIDI note numbers.
+
+This prevents musical transposition from accidentally moving articulation or control notes.
+
+---
+
+# Song View
+
+**Song View** provides a structural overview of the complete song.
+
+It includes:
+
+- Song sections
+- Chord progression
+- Playback cursor
+- Tempo information
+- Meter information
+- Key information
+- Chord voicings
+- Main melody
+- Lyrics
+- MIDI-expression information
+- Timeline navigation
+- Adjustable time zoom
+- Section navigation
+- Follow Cursor playback behavior
+
+Chord progression, voicing piano rolls, melody piano rolls, and the playback cursor use a shared song timeline so the current playback position remains synchronized across the interface.
+
+---
+
+# Chord Voicing Piano Roll
+
+Chord voicings can be inspected in their own piano-roll area.
+
+The display can show:
+
+- Stored voicing notes
+- Note velocity
+- Pitch positions
+- Timeline placement
+- Playback cursor
+- Preview sound assignment
+
+The voicing display is intended for inspection and auditioning of OSTF harmony data.
+
+It does not create additional performance notes simply because a chord contains descriptive voicing information.
+
+---
+
+# Main Melody
+
+The Main Melody area provides detailed inspection of the primary melody.
+
+Depending on the source OSTF data, the Player can display:
+
+- Melody clips
+- MIDI notes
+- Velocity
+- CC information
+- Pitch Bend
+- Aftertouch
+- Program information
+- Lyrics
+- Pronunciation
+- Playback position
+
+OSTF 4.0 songs can contain richer performance data than conventional note-only MIDI representations.
+
+---
+
+# Arrangement View
+
+**Arrangement View** displays the song's individual arrangement tracks.
+
+Each supported track can provide:
 
 - Piano-roll visualization
-- Instrument and MIDI note information
-- Track-level controls and playback navigation
-- Arrangement inspection and MIDI-oriented workflows
-- OSTF 3.5 note-state information
-- Display of OSTF tracks without hiding them based only on Player-specific track-name assumptions
+- Track role
+- Track order
+- Note information
+- Velocity
+- CC
+- Pitch Bend
+- Aftertouch
+- Level
+- Pan
+- Solo
+- Mute
+- Preview sound
+- Visibility controls
 
-OSTF Player uses the information stored in the OSTF file when identifying melody, lyric, arrangement, and performance data.
+Arrangement tracks remain part of the OSTF song regardless of whether they are currently visible in the Player.
 
-## Lyrics
+Display visibility and audio mute are separate controls.
 
-OSTF supports multiple lyric documents.
+---
 
-OSTF Player supports lyric-document selection while preserving the source song structure.
+# Track Display & Mixer
 
-- Display synchronized lyrics
-- Display pronunciation information where available
-- Switch between available lyric documents
-- Respect the standard primary lyric-document reference when provided
-- Avoid merging unrelated lyric documents into one combined lyric display
+OSTF Player v2.0 includes a Track Display & Mixer area for controlling arrangement-preview playback.
 
-This is useful for songs containing alternate lyrics, translations, pronunciation guides, or multiple vocal-related documents.
+Available controls include:
 
-## Built-in Sound Engine
+- Show / hide track
+- Display ordering
+- Preview sound
+- Level
+- Pan
+- Solo
+- Mute
+- Velocity display options
 
-Preview songs without loading additional instrument plugins:
+These settings are Player-side preview controls.
 
-- 13 built-in instrument sound definitions
-- 4 drum kits
-- Automatic instrument preview assignment
+They do not rewrite the source OSTF song merely because a different preview sound or mixer setting is selected.
+
+---
+
+# GM Instrument Browser
+
+OSTF Player v2.0 introduces a **GM 1–128 instrument browser**.
+
+Instead of exposing only the Player's internal synthesis categories, users can choose instruments using familiar General MIDI program names.
+
+The browser organizes the 128 GM programs into the standard 16 families:
+
+1. Piano
+2. Chromatic Percussion
+3. Organ
+4. Guitar
+5. Bass
+6. Strings
+7. Ensemble
+8. Brass
+9. Reed
+10. Pipe
+11. Synth Lead
+12. Synth Pad
+13. Synth Effects
+14. Ethnic
+15. Percussive
+16. Sound Effects
+
+Each family contains eight GM programs.
+
+The browser can be used for Player preview assignment in areas such as:
+
+- Chord voicing
+- Melody
+- Arrangement tracks
+- Track Display & Mixer
+- Arrangement Sound Setup
+
+---
+
+# GM Program Change Interpretation
+
+OSTF Player can interpret GM Program Change values across the normal **0–127 MIDI program range**.
+
+The Player presents these as the conventional **GM 1–128** instrument list.
+
+The internal preview engine does **not** contain 128 fully sampled General MIDI instruments.
+
+Instead, GM programs are mapped to suitable lightweight internal synthesis families for structural preview playback.
+
+For this reason:
+
+**GM Program interpretation:** supported  
+**128 independent professional GM instruments:** not provided
+
+The built-in engine is intended for song preview and arrangement inspection rather than replacing a dedicated General MIDI module, sampler, or virtual instrument collection.
+
+---
+
+# Built-in Preview Sound Engine
+
+OSTF Player contains a lightweight built-in synthesis engine so songs can be auditioned without loading additional instrument plug-ins.
+
+Internal preview families include sounds suited to roles such as:
+
+- Keys
+- Electric Piano
+- Organ
+- Bass
+- Guitar
+- Strings
+- Lead
+- Pluck
+- Pad
+- Brass / Reed
+- Distorted Guitar
+- Other general preview roles
+
+The engine supports:
+
 - Polyphonic playback
-- Velocity-sensitive performance
-- OSTF 3.5 note-state interpretation
+- Velocity-sensitive playback
+- Basic instrument-specific envelopes
+- Basic filtering
+- Program-based preview assignment
+- MIDI-style expression interpretation where supported
+- Automatic instrument preview assignment
 
-The internal sound engine is intended for song previews and structural inspection, not as a replacement for professional sample libraries or dedicated virtual instruments.
+The internal sounds are intentionally lightweight.
 
-Playback uses the performance-note information stored in the OSTF song.
+They are designed for:
 
-OSTF Player does not generate additional performance notes from chord voicing snapshots or other descriptive metadata during normal playback.
+- Checking song structure
+- Auditioning arrangements
+- Inspecting OSTF files
+- Previewing harmony and melody
+- Comparing tracks
 
-## Key Transposition & Key Diagrams
+They are **not intended to replace professional sample libraries, synthesizers, orchestral libraries, or dedicated instrument plug-ins**.
 
-- Transpose songs in semitone steps.
-- Update displayed key and chord information.
-- Restore the original key at any time.
-- Read the original key from standard OSTF song data.
-- Follow standard OSTF timeline key changes.
-- Preserve `fixedTrigger` MIDI note numbers during transposition.
-- Inspect the **Camelot Key Wheel** and **Circle of Fifths**.
-- Distinguish original and current keys in the key diagrams.
-- Use an independent key for lead sheet printing without changing the Player's current setting.
+---
+
+# Drum Preview Engine
+
+OSTF Player v2.0 includes four built-in drum preview kits:
+
+- Electronic Kit
+- Acoustic-like Kit
+- Tight Kit
+- 808-style Kit
+
+Drum tracks use their MIDI drum-note layout while the selected preview kit determines the Player-side sound character.
+
+A dedicated Drum Kit Browser is used instead of treating drum kits as normal GM melodic instruments.
+
+---
+
+# Arrangement Sound Setup
+
+The **Arrangement Sound Setup** window provides centralized control over Player preview sounds.
+
+It can be used to:
+
+- Inspect current track sound assignments
+- Assign GM instruments
+- Assign drum kits
+- Apply settings to visible tracks
+- Apply settings across song tracks
+- Automatically assign preview sounds based on instrument information
+- Audition individual tracks
+
+Sound Setup changes affect Player preview behavior and do not rewrite the OSTF source file.
+
+---
+
+# Lyrics
+
+OSTF supports multiple lyric documents and vocal-related information.
+
+OSTF Player can display:
+
+- Synchronized lyrics
+- Pronunciation information where available
+- Selected lyric documents
+- Primary lyric-document references
+- Melody-related lyric timing
+
+The Player avoids automatically merging unrelated lyric documents into one combined lyric stream.
+
+This makes it possible for OSTF songs to maintain separate lyric-related documents such as:
+
+- Main vocal lyrics
+- Alternate lyrics
+- Translations
+- Pronunciation guides
+- Other vocal parts
+
+---
+
+# Key Transposition
+
+Songs can be transposed directly in the Player.
+
+Available behavior includes:
+
+- Transpose in semitone steps
+- Update displayed chord information
+- Update displayed key information
+- Restore the original key
+- Follow timeline key changes
+- Preserve fixed-trigger MIDI note numbers
+- Maintain a distinction between original and temporary playback keys
 
 OSTF Player distinguishes between:
 
 - Original song key
-- Current playback-position key
-- Timeline key changes
+- Current timeline key
 - Temporary Player transposition
 - Independent print transposition
 - Musical notes
@@ -196,11 +435,24 @@ OSTF Player distinguishes between:
 
 A missing or non-major/minor key is not silently converted to C major.
 
-> **Music theory note:** Camelot notation is primarily based on major and minor keys. For modes such as Blues or other non-major/minor systems, the Player may show an approximate relationship where appropriate rather than claiming an exact standard Camelot assignment.
+---
 
-## Timeline Support
+# Key Diagrams
 
-OSTF Player reads standard timeline information including:
+OSTF Player includes key-reference diagrams such as:
+
+- Camelot Key Wheel
+- Circle of Fifths
+
+These can be used to compare original and transposed key positions.
+
+> **Music theory note:** Camelot notation is primarily intended for major and minor keys. Modes and non-major/minor tonal systems may only have approximate Camelot relationships.
+
+---
+
+# Timeline Support
+
+OSTF Player reads timeline information including:
 
 - Tempo changes
 - Meter changes
@@ -209,83 +461,81 @@ OSTF Player reads standard timeline information including:
 - Harmonic events
 - Arrangement events
 
-The Player also handles timeline situations such as:
+The Player is also designed to handle situations such as:
 
-- Pickup / anacrusis regions
-- Meter changes within a song
-- Notes extending across clip or structural boundaries
+- Pickup / anacrusis material
+- Meter changes during a song
+- Notes extending across structural boundaries
 - Simultaneous MIDI-style events
-- Song material extending beyond nominal section boundaries
+- Material extending beyond nominal section boundaries
 
-## Lead Sheet & PDF Export
+---
 
-Generate printable chord charts and lead sheets with:
+# Playback
 
-- Paper and portrait/landscape settings
-- Chord symbols, lyrics, and section labels
-- Bar numbers and song credits
+Playback can use the Player's internal preview engine without requiring external instruments.
+
+Playback controls include:
+
+- Play
+- Pause
+- Stop
+- Panic
+- Mute All
+- Section navigation
+- Loop / range workflows where available
+- Follow Cursor
+
+The Player's timeline, piano rolls, and playback cursor are synchronized to the same song-time reference.
+
+---
+
+# Lead Sheet & Printing
+
+OSTF Player includes a printable lead-sheet workflow.
+
+Available options include:
+
+- Chord symbols
+- Lyrics
+- Section labels
+- Bar numbers
+- Song credits
+- Portrait / landscape layouts
 - Font and spacing adjustments
-- Page scaling and layout options
+- Page scaling
+- Print preview
 - Independent print key selection
-- Print preview before PDF export
 
-Song metadata used by the lead sheet is taken from the standard OSTF song data whenever available.
+Lead-sheet metadata is taken from standard OSTF song data where available.
 
-## MIDI Export
+The print key can be changed independently without changing the Player's current playback transposition.
 
-Generate MIDI material from OSTF melody and arrangement information for further use in Ableton Live and other MIDI workflows.
+---
 
-Where possible, OSTF 3.5 note information is preserved appropriately.
+# MIDI-Oriented Workflows
 
-### MIDI Export Behavior
+OSTF Player can work with melody and arrangement information in MIDI-oriented workflows.
 
-- Musical notes follow the selected transposition.
-- `fixedTrigger` notes retain their original MIDI note number.
-- Release Velocity can be represented as Note Off velocity where supported.
-- Disabled notes are not treated as normally sounding notes.
-- Probability and Velocity Deviation are not automatically baked into a permanently randomized MIDI performance.
+Depending on the destination, some OSTF information can be represented directly while other performance semantics may not have an exact Standard MIDI File equivalent.
 
-OSTF contains information that cannot always be represented exactly by a conventional Standard MIDI File. The Player avoids silently converting OSTF-specific performance semantics into destructive random MIDI data.
+General behavior includes:
 
-## Requirements
+- Musical notes follow selected transposition
+- Fixed-trigger notes retain their MIDI note number
+- Disabled notes are not treated as normally sounding notes
+- Release Velocity can be preserved where supported
+- OSTF performance information is not intentionally converted into destructive random MIDI data merely for export
 
-- Ableton Live with **Max for Live** support
-- A compatible Max for Live / Max environment
-- Windows or macOS
-- External `.ostf` files if you want to load songs other than the built-in demos
+OSTF can contain richer information than a conventional Standard MIDI File.
 
-The device is distributed as a single `.amxd` file. No external instrument plug-in is required for basic built-in sound previews.
+---
 
-**Compatibility note:** Exact Ableton Live, Max, and operating-system combinations have not been certified exhaustively. Behavior and performance can depend on your host environment.
+# Included Demo Songs
 
-## Installation
+OSTF Player v2.0 includes **11 built-in OSTF 4.0 demo songs**.
 
-1. Download `OSTF_Player_v1.3.2.amxd` from this repository.
-2. Open Ableton Live.
-3. Create or select a MIDI track.
-4. Drag the `.amxd` file onto the MIDI track.
-5. Click **Open** in the compact device view.
-6. Select a built-in demo or load an external `.ostf` song file.
-
-If you already have an earlier release installed, keep a backup of your previous device and Live Set before replacing it with v1.3.2.
-
-## Quick Start
-
-1. **Open the Player:** Click **Open** in the Max for Live device view.
-2. **Choose a song:** Select one of the 11 built-in demos or open an external `.ostf` file.
-3. **Play:** Use the playback controls to preview the song with the internal instruments and drums.
-4. **Explore:** Switch between **Song** and **Tracks** to examine sections, chords, melodies, lyrics, arrangement data, and note state.
-5. **Inspect metadata:** Check the song title, genre, key, tempo, and other available standard OSTF information.
-6. **Transpose:** Change the key in semitone steps. Fixed-trigger notes remain at their original MIDI note numbers.
-7. **Inspect keys:** Open **Key Diagrams** to compare original and transposed positions.
-8. **Print:** Open the lead sheet print interface, choose layout and print key, preview, and export a PDF.
-9. **Work with MIDI:** Use the available MIDI export tools when you want to continue editing the arrangement in your DAW.
-
-## Included Demo Songs
-
-The Player includes 11 demo songs using the **OSTF 3.5 standard**:
-
-| No. | Genre | Song title | Initial key |
+| No. | Genre | Song Title | Initial Key |
 | --- | --- | --- | --- |
 | 01 | Pop | City Lights Again | C major |
 | 02 | Rock | Against the Current | E minor |
@@ -299,198 +549,297 @@ The Player includes 11 demo songs using the **OSTF 3.5 standard**:
 | 10 | Trance | Above the Horizon | E minor |
 | 11 | Progressive Pop / Fusion | Shifting Ground — Feature Demo | C major |
 
-The separately downloadable demo archive is:
+The demo songs can also be downloaded separately as:
 
-**`OSTF_v3.5_Demo_Song.zip`**
+**`OSTF_v4.0_Demo_Song.zip`**
 
-It contains the 11 demo songs as standard OSTF 3.5 files.
+The downloadable archive contains the demo songs as individual standard `.ostf` files.
 
-The demo songs do not require OSTF Player-specific metadata extensions for information already defined by the OSTF standard.
+---
 
-### Demo Version Management
+# Demo Version Management
 
-Demo filenames identify the **OSTF file-format version**, for example:
+Demo filenames identify the **OSTF file-format version**, independently from the Player version.
 
-`OSTF3.5_Demo_01_Pop_City_Lights_Again.ostf`
+For example:
 
-This makes it possible to update the demo collection when the OSTF specification changes while keeping older examples available for compatibility testing.
+```text
+OSTF4.0_Demo_01_Pop_City_Lights_Again.ostf
+```
 
-**OSTF Player v1.3.2** and **OSTF 3.5** are separate version numbers.
+This makes it possible to maintain older demo collections for compatibility testing while newer demos follow newer OSTF specifications.
 
-## OSTF 3.5 Standard Data Used by the Player
+**OSTF Player v2.0** and **OSTF 4.0** are separate version numbers.
 
-Where available, OSTF Player uses standard OSTF structures including:
+---
 
-- `song.key`
-- `song.genres`
-- `song.languages`
-- `song.moods`
-- `song.credits`
-- `song.primaryMelodyTrackId`
-- `song.primaryLyricDocumentId`
-- `contributors`
-- `timeline.tempoChanges`
-- `timeline.meterChanges`
-- `timeline.keyChanges`
-- `harmony.chords`
-- Standard chord voicing information
-- Standard track and performance-note data
-- Standard lyric documents
-- Standard presentation information
-- `enabled`
-- `releaseVelocity`
-- `probability`
-- `velocityDeviation`
-- `pitchRole`
-- `phraseInstance.noteStateMode`
+# Requirements
 
-Information already defined by OSTF is represented using the OSTF standard rather than duplicated in a Player-specific private metadata layer.
+- Ableton Live with **Max for Live**
+- Compatible Max / Max for Live environment
+- Windows or macOS
+- External `.ostf` files for songs other than the included demos
 
-## About OSTF
+The Player is distributed as a single `.amxd` device.
 
-**OSTF (Open Song Timeline Format)** is a structured song data format for describing musical compositions and arrangements along a timeline.
+No external instrument plug-in is required for basic preview playback.
 
-OSTF data can describe:
+> **Compatibility note:** Every possible Ableton Live, Max, operating-system, hardware, and OSTF-file combination has not been exhaustively certified. Performance may vary between host environments.
 
-- Song sections and structure
-- Chord progressions and harmonic information
-- Key and key changes
-- Tempo and tempo changes
-- Meter and meter changes
-- Melody and lyric information
+---
+
+# Installation
+
+1. Download `OSTF_Player_v2.0.amxd`.
+2. Open Ableton Live.
+3. Create or select a MIDI track.
+4. Drag `OSTF_Player_v2.0.amxd` onto the MIDI track.
+5. Click **Open** in the compact Max for Live device view.
+6. Select a built-in demo or load an external `.ostf` file.
+
+If replacing an older OSTF Player version, keeping a backup of the previous device and important Live Sets is recommended.
+
+---
+
+# Quick Start
+
+1. **Open the Player**  
+   Click **Open** in the Max for Live device view.
+
+2. **Choose a song**  
+   Select one of the 11 built-in demos or load an external `.ostf` file.
+
+3. **Play**  
+   Use the Player transport to audition the song.
+
+4. **Explore Song View**  
+   Inspect sections, chords, chord voicings, melody, lyrics, and timeline information.
+
+5. **Explore Arrangement View**  
+   Inspect the individual arrangement tracks and MIDI-expression information.
+
+6. **Choose preview sounds**  
+   Use the GM Instrument Browser or Drum Kit Browser.
+
+7. **Adjust the arrangement preview**  
+   Use Track Display & Mixer or Arrangement Sound Setup.
+
+8. **Transpose**  
+   Change the song key in semitone steps.
+
+9. **Inspect keys**  
+   Open Key Diagrams for Camelot and Circle of Fifths information.
+
+10. **Print**  
+    Open the lead-sheet interface and choose the desired print layout and key.
+
+---
+
+# About OSTF
+
+**OSTF (Open Song Timeline Format)** is a structured song-data format for describing musical compositions and arrangements along a timeline.
+
+OSTF can describe information such as:
+
+- Song structure
+- Sections
+- Chord progressions
+- Chord voicings
+- Keys
+- Key changes
+- Tempo
+- Tempo changes
+- Meter
+- Meter changes
+- Melodies
+- Multiple melody tracks
+- Lyrics
 - Multiple lyric documents
-- Pronunciation and lyric alignment
-- Instrument and arrangement tracks
-- MIDI-related performance data
-- Note enable / mute state
+- Pronunciation
+- Instrument tracks
+- Arrangement data
+- MIDI notes
+- Velocity
 - Release Velocity
 - Note Probability
 - Velocity Deviation
-- Musical and fixed-trigger pitch roles
-- Song metadata including genres, languages, moods, and credits
+- Program Change
+- Control Change
+- Pitch Bend
+- Aftertouch
+- Fixed MIDI triggers
+- Genres
+- Languages
+- Moods
+- Credits
 - Presentation information
-- Detailed timeline-based musical information
+- Other structured timeline information
 
-OSTF is intended to make structured musical information easier to exchange, inspect, and reuse across songwriting, arrangement, performance, visualization, and music-production tools.
+OSTF is intended to make structured musical information easier to exchange, inspect, edit, visualize, arrange, perform, and reuse across compatible music-production tools.
 
-### Related Projects
+---
 
-- [Open Song Timeline Format 3.5](https://github.com/yoh-nak/Open-Song-Timeline-Format-3.5)
+# Related Projects
+
+- [Open Song Timeline Format 4.0](https://github.com/yoh-nak/Open-Song-Timeline-Format-4.0)
 - [OSTF Player for Max for Live](https://github.com/yoh-nak/OSTF-Player-M4L)
 
-## Design Philosophy
+---
 
-**Standards-first:** Use the OSTF specification as the source of truth instead of introducing Player-specific representations of information already defined by OSTF.
+# Design Philosophy
 
-**Visualization:** Understand a complete song without manually inspecting multiple MIDI clips.
+**Standards-first**  
+Use the OSTF specification as the source of truth rather than creating Player-specific replacements for information already represented by OSTF.
 
-**Playback:** Preview musical arrangements using an integrated lightweight sound engine.
+**Visualization**  
+Make it possible to understand a complete song without manually opening many individual MIDI clips.
 
-**Interoperability:** Work with structured song data across compatible OSTF tools and Ableton Live workflows.
+**Playback**  
+Provide lightweight integrated preview playback for checking song structure and arrangement.
 
-**Non-destructive behavior:** Keep loaded OSTF song data unchanged during normal playback, visualization, and temporary transposition.
+**Interoperability**  
+Allow structured song information to move between compatible OSTF applications and DAW workflows.
 
-**Semantic preservation:** Do not transpose, randomize, discard, or reinterpret OSTF performance information when the destination format cannot represent it accurately.
+**Non-destructive behavior**  
+Avoid rewriting the loaded OSTF song simply because the Player transposes, previews, hides, solos, mutes, or assigns a temporary preview instrument.
 
-## Limitations
+**Semantic preservation**  
+Avoid silently converting structured OSTF information into a different meaning merely because another format or playback environment cannot represent it exactly.
 
-- Built-in instrument sounds are designed primarily for preview purposes.
-- Sound quality, timing, and CPU use depend on the host environment.
-- Complex arrangements may require additional processing resources.
-- Not all DAW-specific functionality is represented in OSTF.
+---
+
+# Limitations
+
+- Built-in sounds are intended primarily for preview purposes.
+- The GM browser does not represent 128 independent professional sample-based instruments.
+- GM programs are mapped to the Player's lightweight internal synthesis system.
+- The four internal drum kits are intended for preview playback.
+- Sound quality, timing, and CPU usage depend on the host environment.
+- Large or highly detailed arrangements may require additional processing resources.
+- Not every DAW-specific feature can be represented in OSTF.
 - Not every OSTF feature can be represented exactly in Standard MIDI Files.
-- Compatibility with every possible legacy or non-standard OSTF file is not guaranteed.
-- Some advanced operations depend on the installed Max for Live environment.
-- Camelot indications for non-major/minor modes may be approximate.
-- Older OSTF files that stored important information only in non-standard application-specific extensions may not expose that information as standard OSTF metadata.
-- Ableton Live / Max host behavior can vary depending on application and operating-system versions.
+- Compatibility with every legacy, experimental, or non-standard OSTF file is not guaranteed.
+- Some functionality depends on the installed Max for Live environment.
+- Camelot relationships for non-major/minor tonal systems may be approximate.
+- Host behavior may vary depending on Ableton Live, Max, operating-system, graphics, and hardware versions.
 
-## Version History
+---
 
-### v1.3.2 — OSTF 3.5 Support & Playback Cursor Fix
+# Version History
 
-- Add support for the OSTF 3.5 standard.
-- Update the 11 built-in demo songs to OSTF 3.5.
-- Add a separately downloadable OSTF 3.5 demo-song collection.
-- Add support for note `enabled` state.
-- Add support for Release Velocity.
-- Add support for note Probability.
-- Add support for Velocity Deviation.
-- Add support for `pitchRole`.
-- Preserve `fixedTrigger` MIDI note numbers during transposition.
-- Add support for OSTF 3.5 phrase note-state behavior.
-- Preserve standard OSTF metadata handling introduced in v1.2.0.
-- Maintain compatibility with OSTF 3.0–3.4 where possible.
-- Fix Song View playback-cursor layering.
-- Keep the yellow playback cursor above chord clips and timeline elements.
+## v2.0 — OSTF 4.0 Player & Major UI / Playback Update
 
-### v1.2.0 — Full OSTF 3.4 Standard Support
+- Add OSTF 4.0 support.
+- Retain compatibility with supported OSTF 3.x files.
+- Update the 11 built-in demo songs to OSTF 4.0.
+- Add a separately downloadable OSTF 4.0 demo-song archive.
+- Add richer OSTF 4.0 MIDI-expression visualization.
+- Add Program Change interpretation.
+- Add CC visualization.
+- Add Pitch Bend visualization.
+- Add Aftertouch visualization.
+- Add GM 1–128 instrument browser.
+- Add GM Program Change preview mapping.
+- Add dedicated Drum Kit Browser.
+- Add Arrangement Sound Setup.
+- Add unified per-track preview-sound assignment.
+- Improve Track Display & Mixer.
+- Improve Song View chord-voicing inspection.
+- Improve Main Melody inspection.
+- Improve Arrangement View track inspection.
+- Improve built-in preview instrument definitions.
+- Improve built-in drum preview kits.
+- Improve demo-song preview assignments.
+- Improve timeline and playback-cursor synchronization.
+- Improve piano-roll playback tracking.
+- Improve Song View / Arrangement View consistency.
+- Improve internal playback stability.
+- Preserve standard OSTF metadata rather than replacing it with Player-specific assumptions.
 
-- Add support for the OSTF 3.4 standard.
-- Update the 11 built-in demo songs to OSTF 3.4.
-- Remove dependencies on Player-specific extensions for information defined by the OSTF standard.
-- Read song key information from standard OSTF fields.
-- Read timeline key changes from standard OSTF fields.
-- Read genre information from standard OSTF song metadata.
-- Use standard song credits and contributor information.
-- Use standard chord voicing information.
-- Use standard primary melody and primary lyric-document references.
-- Improve handling of multiple lyric documents.
-- Improve track display and avoid hiding tracks based only on Player-specific naming assumptions.
-- Improve original-key, timeline-key, transposition, and print-key handling.
-- Avoid treating an unspecified key as C major.
-- Preserve support for older OSTF 3.0–3.3 files where possible.
+## v1.3.2 — OSTF 3.5 Support & Playback Cursor Fix
 
-### v1.1.3 — OSTF 3.3 Compatibility & Key Display Fixes
+- Add OSTF 3.5 support.
+- Update the 11 built-in demos to OSTF 3.5.
+- Add OSTF 3.5 note-state support.
+- Add enabled-note handling.
+- Add Release Velocity support.
+- Add Probability support.
+- Add Velocity Deviation support.
+- Add pitch-role support.
+- Preserve fixed-trigger MIDI notes during transposition.
+- Improve playback-cursor layering.
+- Maintain compatibility with earlier OSTF 3.x files where possible.
 
-- Support OSTF 3.3, including genre metadata read from song files.
-- Maintain compatibility with OSTF 3.0–3.2.
-- Update the 11-song demo collection to OSTF 3.3.
-- Consolidate song metadata, tempo, key, and transpose settings into a single compact header row.
-- Correct Camelot color highlighting after transposition.
-- Improve original/current key highlighting in Camelot and Circle of Fifths diagrams.
-- Improve key-diagram modal layout and resizing for smaller windows.
-- Preserve existing playback, lyric, MIDI, and PDF features.
+## v1.2.0 — OSTF 3.4 Standard Support
 
-### v1.0 — Initial Public Release
+- Add OSTF 3.4 support.
+- Move supported metadata handling to standard OSTF fields.
+- Improve key, genre, credits, voicing, lyrics, and track handling.
+- Improve multiple lyric-document handling.
+- Improve original-key and transposition behavior.
 
-- OSTF 3.0–3.2 file support
-- Interactive Song and Tracks views
-- Chord, melody, and arrangement visualization
-- Synchronized lyrics and pronunciation
-- Built-in instruments and drum kits
-- Automatic instrument preview assignment
-- Key transposition and key diagrams
-- Customizable lead sheet PDF export, including an independent print key
-- MIDI export functionality
-- 11 demonstration songs
-- Compact Max for Live device launcher
-- Playback and interface performance improvements
+## v1.1.3 — OSTF 3.3 Compatibility & Key Display Fixes
 
-## Support Development — Buy Me a Coffee
+- Add OSTF 3.3 compatibility.
+- Add genre metadata support.
+- Improve metadata header layout.
+- Improve Camelot and Circle of Fifths displays.
+- Improve key-diagram modal behavior.
 
-OSTF Player is developed independently and made available **free of charge**.
+## v1.0 — Initial Public Release
 
-If you enjoy the device and would like to support future improvements, new OSTF features, and additional free Max for Live tools, you can make a voluntary contribution:
+- OSTF song loading
+- Song and arrangement visualization
+- Chord progression display
+- Melody visualization
+- Lyrics and pronunciation
+- Built-in preview instruments
+- Built-in drum kits
+- Key transposition
+- Key diagrams
+- Lead-sheet printing
+- MIDI-oriented workflows
+- Demonstration songs
+- Compact Max for Live launcher
+
+---
+
+# Support Development — Buy Me a Coffee
+
+OSTF Player is independently developed and distributed **free of charge**.
+
+If you enjoy the device and would like to support continued OSTF development, improvements, documentation, and additional free Max for Live tools, voluntary support is available here:
 
 **[☕ Buy Me a Coffee — yohsukenak](https://buymeacoffee.com/yohsukenak)**
 
-Donations are entirely optional. No payment is required to use the device's core features.
+Donations are entirely optional.
 
-## Credits
+No payment is required to use OSTF Player's core functionality.
+
+---
+
+# Credits
 
 **Software development:** [yoh-nak](https://github.com/yoh-nak)  
 **Project:** Open Song Timeline Format (OSTF)  
 **Repository:** https://github.com/yoh-nak/OSTF-Player-M4L
 
-The demo compositions are provided as example song material. Software development credit does not imply personal authorship of the demo compositions, lyrics, or arrangements.
+The included demo compositions are provided as example song material.
 
-## License and Copyright
-
-A software license has not been specified in this repository. Unless a separate license is provided, public access to the repository does not itself grant permission to redistribute, modify, or commercially reuse the software.
-
-Demo song materials may be subject to separate rights and usage conditions. Check those conditions before redistributing or reusing the music outside the project.
+Software-development credit does not necessarily imply personal authorship of every demo composition, lyric, or arrangement.
 
 ---
 
-**OSTF Player v1.3.2 — OSTF 3.5 Player for Ableton Live / Max for Live**
+# License and Copyright
+
+A software license has not been specified in this repository.
+
+Unless a separate license is provided, public access to the repository does not by itself grant permission to redistribute, modify, sublicense, or commercially reuse the software.
+
+Demo-song materials may be subject to separate rights and usage conditions.
+
+Check the applicable conditions before redistributing or reusing demo music outside this project.
+
+---
+
+**OSTF Player v2.0 — OSTF 3.x / 4.0 Player for Ableton Live / Max for Live**
